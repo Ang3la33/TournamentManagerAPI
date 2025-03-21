@@ -14,8 +14,7 @@ public interface MemberRepository extends JpaRepository<Member, UUID> {
 
     List<Member> findByPhone(String phone);
 
-    @Query("SELECT m FROM Member m WHERE m.membershipDurationInMonths = :duration")
-    List<Member> findByMembershipDurationInMonths(@Param("duration") int duration);
+    List<Member> findByMembershipDuration(int membershipDuration);
 
     @Query("SELECT m FROM Member m JOIN m.tournaments t WHERE t.startDate = :startDate")
     List<Member> findByTournamentStartDate(@Param("startDate") String startDate);
