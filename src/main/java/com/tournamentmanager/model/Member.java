@@ -43,4 +43,18 @@ public class Member {
     @ManyToMany(mappedBy = "members")
     private Set<Tournament> tournaments = new HashSet<>();
 
+    public String getMembershipType() {
+        if (membershipDurationInMonths < 12) {
+            return "New Member";
+        } else if (membershipDurationInMonths >= 12 && membershipDurationInMonths <=48) {
+            return "Regular Member";
+        } else {
+            return "Gold Member";
+        }
+    }
+
+    // Convert the membership duration to years
+    public int getMembershipInYears() {
+        return membershipDurationInMonths / 12;
+    }
 }
