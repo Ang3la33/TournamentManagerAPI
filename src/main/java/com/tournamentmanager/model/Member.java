@@ -3,6 +3,7 @@ package com.tournamentmanager.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -43,18 +44,12 @@ public class Member {
     @ManyToMany(mappedBy = "members")
     private Set<Tournament> tournaments = new HashSet<>();
 
-    public String getMembershipType() {
-        if (membershipDurationInMonths < 12) {
-            return "New Member";
-        } else if (membershipDurationInMonths >= 12 && membershipDurationInMonths <=48) {
-            return "Regular Member";
-        } else {
-            return "Gold Member";
-        }
-    }
+    @Formula("(CASE " +
+            "WHEN membership_duration_in_months < 12 THEN 'New Member' " +
+            "WHEN membership_duration_in_months BETWEEN 12 AND 48 THEN 'Regular Member' " +
+            "ELSE 'Gold Member' END)")
+    private String membershipType;
 
-    // Convert the membership duration to years
-    public int getMembershipInYears() {
-        return membershipDurationInMonths / 12;
-    }
+    @Formula("(membership_duration_in_months / 12)")
+    private int membershipDuration;
 }
