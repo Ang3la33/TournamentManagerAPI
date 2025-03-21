@@ -38,9 +38,12 @@ public class Member {
     @Column(nullable = false)
     private LocalDate memberJoinDate;
 
-    // Calculate the membership duration in years based on the current date
     @Formula("(TIMESTAMPDIFF(YEAR, member_join_date, CURRENT_DATE))")
     private int membershipDuration;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private MembershipType membershipType;
 
     @ManyToMany(mappedBy = "members")
     private Set<Tournament> tournaments = new HashSet<>();
