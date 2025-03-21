@@ -3,6 +3,7 @@ package com.tournamentmanager.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -37,8 +38,9 @@ public class Member {
     @Column(nullable = false)
     private LocalDate memberJoinDate;
 
-    @Column(nullable = false)
-    private int membershipDurationInMonths;
+    // Calculate the membership duration in years based on the current date
+    @Formula("(TIMESTAMPDIFF(YEAR, member_join_date, CURRENT_DATE))")
+    private int membershipDuration;
 
     @ManyToMany(mappedBy = "members")
     private Set<Tournament> tournaments = new HashSet<>();
