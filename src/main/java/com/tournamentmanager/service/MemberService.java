@@ -1,8 +1,10 @@
 package com.tournamentmanager.service;
 
+import com.tournamentmanager.dto.MemberDTO;
 import com.tournamentmanager.model.Member;
 import com.tournamentmanager.repository.MemberRepository;
 import com.tournamentmanager.repository.TournamentRepository;
+import com.tournamentmanager.utility.MemberMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,6 +49,13 @@ public class MemberService {
         existing.setAddress(updatedMember.getAddress());
 
         return memberRepository.save(existing);
+    }
+
+    public List<MemberDTO> getAllMemberDTOs() {
+        return memberRepository.findAll()
+                .stream()
+                .map(MemberMapper::toDTO)
+                .toList();
     }
 
 }
