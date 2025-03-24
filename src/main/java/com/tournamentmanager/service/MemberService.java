@@ -2,6 +2,8 @@ package com.tournamentmanager.service;
 
 import com.tournamentmanager.dto.MemberDTO;
 import com.tournamentmanager.model.Member;
+import com.tournamentmanager.model.MembershipType;
+import com.tournamentmanager.model.Tournament;
 import com.tournamentmanager.repository.MemberRepository;
 import com.tournamentmanager.repository.TournamentRepository;
 import com.tournamentmanager.utility.MemberMapper;
@@ -58,4 +60,30 @@ public class MemberService {
                 .toList();
     }
 
+    public List<MemberDTO> getMembersByDuration(int years) {
+        return memberRepository.findByMembershipDuration(years)
+                .stream()
+                .map(MemberMapper::toDTO)
+                .toList();
+    }
+
+    public List<MemberDTO> getMembersByType(MembershipType type) {
+        return memberRepository.findByMembershipType(type)
+                .stream()
+                .map(MemberMapper::toDTO)
+                .toList();
+    }
+
+    public Member addMemberToTournament(UUID memberId, UUID tournamentId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+
+        Tournament tournament = tournamentRepository.findById(tournamentId)
+                .orElseThrow(() -> new RuntimeException("Tournament not found"));
+
+        member.getTournaments().add(tournament);
+        tournament.getMembers().add(member);
+
+        return memberRepository.save(member);
+    }
 }
