@@ -3,6 +3,7 @@ package com.tournamentmanager.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -44,6 +45,7 @@ public class Tournament {
             joinColumns = @JoinColumn(name = "tournament_id"),
             inverseJoinColumns = @JoinColumn(name = "member_id")
     )
+    @JsonBackReference
     private Set<Member> members = new HashSet<>();
 
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Formula;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -46,6 +47,7 @@ public class Member {
     private MembershipType membershipType;
 
     @ManyToMany(mappedBy = "members")
+    @JsonBackReference
     private Set<Tournament> tournaments = new HashSet<>();
 
 }
