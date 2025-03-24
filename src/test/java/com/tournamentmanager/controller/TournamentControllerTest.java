@@ -1,10 +1,8 @@
 package com.tournamentmanager.controller;
 
-import com.tournamentmanager.dto.MemberDTO;
 import com.tournamentmanager.model.Member;
 import com.tournamentmanager.utility.MemberUtils;
 import com.tournamentmanager.model.Tournament;
-import com.tournamentmanager.dto.TournamentDTO;
 import com.tournamentmanager.service.TournamentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,11 +30,7 @@ public class TournamentControllerTest {
     private TournamentController tournamentController;
 
     private Tournament tournament;
-    private TournamentDTO tournamentDTO;
-
     private Member member;
-    private MemberDTO memberDTO;
-
     private UUID tournamentId;
 
     @BeforeEach
@@ -54,8 +48,6 @@ public class TournamentControllerTest {
         tournament.setCashPrize(new BigDecimal("1000.00"));
         tournament.setMembers(Set.of());
 
-        tournamentDTO = TournamentMapper.toDTO(tournament);
-
         member = new Member();
         member.setName("Jane Doe");
         member.setEmail("janedoe@gmail.com");
@@ -66,34 +58,33 @@ public class TournamentControllerTest {
         member.setMembershipDuration(years);
         member.setMembershipType(MemberUtils.determineMembershipType(years));
 
-        memberDTO = MemberMapper.toDTO(member);
     }
 
     @Test
     void testGetAllTournaments() {
         when(tournamentService.getAllTournaments()).thenReturn(List.of(tournament));
 
-        ResponseEntity<List<TournamentDTO>> response = tournamentController.getAllTournaments();
+        ResponseEntity<List<Tournament>> response = tournamentController.getAllTournaments();
 
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(List.of(tournamentDTO), response.getBody());
+        assertEquals(List.of(tournament), response.getBody());
     }
 
     @Test
     void testGetTournamentById_FoundTournament() {
         when(tournamentService.getTournamentById(tournamentId)).thenReturn(Optional.of(tournament));
 
-        ResponseEntity<TournamentDTO> response = tournamentController.getTournamentById(tournamentId);
+        ResponseEntity<Tournament> response = tournamentController.getTournamentById(tournamentId);
 
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(tournamentDTO, response.getBody());
+        assertEquals(tournament, response.getBody());
     }
 
     @Test
     void testGetTournamentById_NotFoundTournament() {
         when(tournamentService.getTournamentById(tournamentId)).thenReturn(Optional.empty());
 
-        ResponseEntity<TournamentDTO> response = tournamentController.getTournamentById(tournamentId);
+        ResponseEntity<Tournament> response = tournamentController.getTournamentById(tournamentId);
 
         assertEquals(404, response.getStatusCodeValue());
     }
@@ -102,7 +93,7 @@ public class TournamentControllerTest {
     void testCreateTournament() {
         when(tournamentService.createTournament(any(Tournament.class))).thenReturn(tournament);
 
-        ResponseEntity<TournamentDTO> response = tournamentController.createTournament(tournament);
+        ResponseEntity<Tournament> response = tournamentController.createTournament(tournament);
 
         assertEquals(200, response.getStatusCodeValue());
         assertNotNull(response.getBody());
@@ -112,7 +103,7 @@ public class TournamentControllerTest {
     void testGetTournamentByLocation() {
         when(tournamentService.getTournamentByLocation("St.John's")).thenReturn(List.of(tournament));
 
-        ResponseEntity<List<TournamentDTO>> response = tournamentController.getTournamentsByLocation("St.John's");
+        ResponseEntity<List<Tournament>> response = tournamentController.getTournamentsByLocation("St.John's");
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals("St.John's", response.getBody().get(0).getLocation());
@@ -123,7 +114,7 @@ public class TournamentControllerTest {
         LocalDate queryDate = LocalDate.of(2025, 7, 1);
         when(tournamentService.getTournamentByStartDate(queryDate)).thenReturn(List.of(tournament));
 
-        ResponseEntity<List<TournamentDTO>> response = tournamentController.getTournamentsByStartDate(queryDate);
+        ResponseEntity<List<Tournament>> response = tournamentController.getTournamentsByStartDate(queryDate);
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(1, response.getBody().size());
@@ -132,12 +123,12 @@ public class TournamentControllerTest {
 
     @Test
     void testGetMembersInTournament() {
-        when(tournamentService.getMembersInTournament(tournamentId)).thenReturn(List.of(memberDTO));
+        when(tournamentService.getMembersInTournament(tournamentId)).thenReturn(List.of(member));
 
-        ResponseEntity<List<MemberDTO>> response = tournamentController.getMembersInTournament(tournamentId);
+        ResponseEntity<List<Member>> response = tournamentController.getMembersInTournament(tournamentId);
 
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(List.of(memberDTO), response.getBody());
+        assertEquals(List.of(member), response.getBody());
     }
 
 }

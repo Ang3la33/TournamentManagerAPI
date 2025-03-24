@@ -1,6 +1,5 @@
 package com.tournamentmanager.service;
 
-import com.tournamentmanager.dto.MemberDTO;
 import com.tournamentmanager.model.Member;
 import com.tournamentmanager.model.MembershipType;
 import com.tournamentmanager.model.Tournament;
@@ -52,25 +51,13 @@ public class MemberService {
         return memberRepository.save(existing);
     }
 
-    public List<MemberDTO> getAllMemberDTOs() {
-        return memberRepository.findAll()
-                .stream()
-                .map(MemberMapper::toDTO)
-                .toList();
+
+    public List<Member> getMembersByDuration(int years) {
+        return memberRepository.findByMembershipDuration(years);
     }
 
-    public List<MemberDTO> getMembersByDuration(int years) {
-        return memberRepository.findByMembershipDuration(years)
-                .stream()
-                .map(MemberMapper::toDTO)
-                .toList();
-    }
-
-    public List<MemberDTO> getMembersByType(MembershipType type) {
-        return memberRepository.findByMembershipType(type)
-                .stream()
-                .map(MemberMapper::toDTO)
-                .toList();
+    public List<Member> getMembersByType(MembershipType type) {
+        return memberRepository.findByMembershipType(type);
     }
 
     public Member addMemberToTournament(UUID memberId, UUID tournamentId) {

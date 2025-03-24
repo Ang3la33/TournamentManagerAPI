@@ -1,6 +1,5 @@
 package com.tournamentmanager.controller;
 
-import com.tournamentmanager.dto.MemberDTO;
 import com.tournamentmanager.model.Member;
 import com.tournamentmanager.model.MembershipType;
 import com.tournamentmanager.service.MemberService;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/members")
@@ -22,51 +20,43 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MemberDTO>> getAllMembers() {
-        List<MemberDTO> members = memberService.getAllMembers().stream()
-                .map(MemberMapper::toDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok().body(members);
+    public ResponseEntity<List<Member>> getAllMembers() {
+        List<Member> members = memberService.getAllMembers();
+        return ResponseEntity.ok(members);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MemberDTO> getMemberById(@PathVariable UUID id) {
+    public ResponseEntity<Member> getMemberById(@PathVariable UUID id) {
         return memberService.getMemberById(id)
-                .map(MemberMapper::toDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<MemberDTO> createMember(@RequestBody Member member) {
-        Member created = memberService.createMember(member);
-        return ResponseEntity.ok().body(MemberMapper.toDTO(created));
+    public ResponseEntity<Member> createMember(@RequestBody Member member) {
+        return ResponseEntity.ok(memberService.createMember(member));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MemberDTO> updateMember(@PathVariable UUID id, @RequestBody Member updatedMember) {
-        Member updated = memberService.updateMember(id, updatedMember);
-        return ResponseEntity.ok().body(MemberMapper.toDTO(updated));
+    public ResponseEntity<Member> updateMember(@PathVariable UUID id, @RequestBody Member updatedMember) {
+        return ResponseEntity.ok(memberService.updateMember(id, updatedMember));
     }
 
     @GetMapping("/type")
-    public ResponseEntity<List<MemberDTO>> getByMembershipType(@RequestParam MembershipType type) {
-        List<MemberDTO> members = memberService.getMembersByType(type);
-        return ResponseEntity.ok(members);
+    public ResponseEntity<List<Member>> getByMembershipType(@RequestParam MembershipType type) {
+        return ResponseEntity.ok(memberService.getMembersByType(type));
     }
 
     @GetMapping("/duration")
-    public ResponseEntity<List<MemberDTO>> getByMembershipDuration(@RequestParam int years) {
-        List<MemberDTO> members = memberService.getMembersByDuration(years);
-        return ResponseEntity.ok(members);
+    public ResponseEntity<List<Member>> getByMembershipDuration(@RequestParam int years) {
+        return ResponseEntity.ok(memberService.getMembersByDuration(years));
     }
 
     @PostMapping("/{memberId}/join/{tournamentId}")
-    public ResponseEntity<MemberDTO> joinTournament(
+    public ResponseEntity<Member> joinTournament(
             @PathVariable UUID memberId,
             @PathVariable UUID tournamentId) {
-        Member updated = memberService.addMemberToTournament(memberId, tournamentId);
-        return ResponseEntity.ok(MemberMapper.toDTO(updated));
+        return ResponseEntity.ok(memberService.addMemberToTournament(memberId, tournamentId));
     }
 
 }

@@ -1,10 +1,7 @@
 package com.tournamentmanager.controller;
 
-import com.tournamentmanager.dto.MemberDTO;
 import com.tournamentmanager.model.Member;
-import com.tournamentmanager.model.MembershipType;
 import com.tournamentmanager.service.MemberService;
-import com.tournamentmanager.utility.MemberUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import static com.tournamentmanager.utility.MemberUtils.*;
-import static com.tournamentmanager.utility.MemberMapper.toDTO;
 
 public class MemberControllerTest {
 
@@ -32,7 +28,6 @@ public class MemberControllerTest {
     private MemberController memberController;
 
     private Member member;
-    private MemberDTO memberDTO;
     private UUID memberId;
 
     @BeforeEach
@@ -53,23 +48,22 @@ public class MemberControllerTest {
         member.setMembershipDuration(years);
         member.setMembershipType(determineMembershipType(years));
 
-        memberDTO = toDTO(member);
     }
 
     @Test
     void testGetMemberById_ReturnsMember() {
         when(memberService.getMemberById(memberId)).thenReturn(Optional.of(member));
-        ResponseEntity<MemberDTO> response = memberController.getMemberById(memberId);
+        ResponseEntity<Member> response = memberController.getMemberById(memberId);
 
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(memberDTO.getName(), response.getBody().getName());
+        assertEquals(member.getName(), response.getBody().getName());
     }
 
     @Test
     void testGetMemberById_ReturnsNotFound() {
         when(memberService.getMemberById(memberId)).thenReturn(Optional.empty());
 
-        ResponseEntity<MemberDTO> response = memberController.getMemberById(memberId);
+        ResponseEntity<Member> response = memberController.getMemberById(memberId);
 
         assertEquals(404, response.getStatusCodeValue());
     }
@@ -78,19 +72,19 @@ public class MemberControllerTest {
     void testGetAllMembers_ReturnsAllMembers() {
         when(memberService.getAllMembers()).thenReturn(List.of(member));
 
-        ResponseEntity<List<MemberDTO>> response = memberController.getAllMembers();
+        ResponseEntity<List<Member>> response = memberController.getAllMembers();
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(1, response.getBody().size());
-        assertEquals(memberDTO.getName(), response.getBody().get(0).getName());
+        assertEquals(member.getName(), response.getBody().get(0).getName());
     }
 
     @Test
     void testCreateMember_ReturnsCreatedMember() {
         when(memberService.createMember(any(Member.class))).thenReturn(member);
-        ResponseEntity<MemberDTO> response = memberController.createMember(member);
+        ResponseEntity<Member> response = memberController.createMember(member);
 
         assertEquals(200, response.getStatusCodeValue());
-        assertEquals(memberDTO.getName(), response.getBody().getName());
+        assertEquals(member.getName(), response.getBody().getName());
     }
 }

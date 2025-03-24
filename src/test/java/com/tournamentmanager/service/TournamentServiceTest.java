@@ -1,9 +1,7 @@
 package com.tournamentmanager.service;
 
-import com.tournamentmanager.dto.MemberDTO;
 import com.tournamentmanager.model.Member;
 import com.tournamentmanager.utility.MemberUtils;
-import com.tournamentmanager.utility.MemberUtils.*;
 import com.tournamentmanager.model.Tournament;
 import com.tournamentmanager.repository.TournamentRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -116,11 +114,12 @@ public class TournamentServiceTest {
         tournament.setMembers(Set.of(member));
         when(tournamentRepository.findById(tournamentId)).thenReturn(Optional.of(tournament));
 
-        List<MemberDTO> result = tournamentService.getMembersInTournament(tournamentId);
+        List<Member> result = tournamentService.getMembersInTournament(tournamentId);
 
         assertNotNull(result);
         assertEquals(1, result.size());
         assertEquals("Angie Smith", result.get(0).getName());
+        assertEquals(member.getId(), result.get(0).getId());
     }
 
 }

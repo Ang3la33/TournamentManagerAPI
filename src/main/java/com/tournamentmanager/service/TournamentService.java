@@ -1,14 +1,12 @@
 package com.tournamentmanager.service;
 
-import com.tournamentmanager.dto.MemberDTO;
+import com.tournamentmanager.model.Member;
 import com.tournamentmanager.model.Tournament;
 import com.tournamentmanager.repository.TournamentRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class TournamentService {
@@ -39,12 +37,10 @@ public class TournamentService {
         return tournamentRepository.findByLocationContainingIgnoreCase(location);
     }
 
-    public List<MemberDTO> getMembersInTournament(UUID id) {
-        return tournamentRepository.findById(id)
-                .map(tournament -> tournament.getMembers().stream()
-                        .map(MemberMapper::toDTO)
-                        .toList()
-                )
-                .orElseThrow( () -> new RuntimeException("Tournament not found"));
+    public List<Member> getMembersInTournament(UUID id) {
+        Tournament tournament = tournamentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tournament not found"));
+
+        return new ArrayList<>(tournament.getMembers());
     }
 }
