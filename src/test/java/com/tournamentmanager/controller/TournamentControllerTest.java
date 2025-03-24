@@ -6,8 +6,6 @@ import com.tournamentmanager.utility.MemberUtils;
 import com.tournamentmanager.model.Tournament;
 import com.tournamentmanager.dto.TournamentDTO;
 import com.tournamentmanager.service.TournamentService;
-import com.tournamentmanager.utility.MemberMapper;
-import com.tournamentmanager.utility.TournamentMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

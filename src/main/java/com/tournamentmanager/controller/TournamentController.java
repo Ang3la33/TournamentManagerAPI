@@ -3,7 +3,6 @@ package com.tournamentmanager.controller;
 import com.tournamentmanager.dto.MemberDTO;
 import com.tournamentmanager.model.Tournament;
 import com.tournamentmanager.dto.TournamentDTO;
-import com.tournamentmanager.utility.TournamentMapper;
 import com.tournamentmanager.service.TournamentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

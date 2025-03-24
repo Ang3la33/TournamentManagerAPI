@@ -4,7 +4,6 @@ import com.tournamentmanager.dto.MemberDTO;
 import com.tournamentmanager.model.Member;
 import com.tournamentmanager.model.MembershipType;
 import com.tournamentmanager.service.MemberService;
-import com.tournamentmanager.utility.MemberMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
