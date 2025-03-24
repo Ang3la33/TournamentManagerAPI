@@ -1,5 +1,6 @@
 package com.tournamentmanager.service;
 
+import com.tournamentmanager.model.Member;
 import com.tournamentmanager.model.Tournament;
 import com.tournamentmanager.repository.TournamentRepository;
 import org.springframework.stereotype.Service;
@@ -38,4 +39,10 @@ public class TournamentService {
         return tournamentRepository.findByLocationContainingIgnoreCase(location);
     }
 
+    public List<Member> getMembersInTournament(UUID id) {
+        return tournamentRepository.findById(id)
+                .map(Tournament::getMembers)
+                .map(List::copyOf)
+                .orElseThrow( () -> new RuntimeException("Tournament not found"));
+    }
 }
