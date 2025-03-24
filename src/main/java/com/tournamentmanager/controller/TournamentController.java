@@ -1,5 +1,6 @@
 package com.tournamentmanager.controller;
 
+import com.tournamentmanager.dto.MemberDTO;
 import com.tournamentmanager.model.Member;
 import com.tournamentmanager.model.Tournament;
 import com.tournamentmanager.service.TournamentService;
@@ -51,8 +52,8 @@ public class TournamentController {
     }
 
     @GetMapping("/{id}/members")
-    public ResponseEntity<List<Member>> getMembersInTournament(@PathVariable UUID id) {
-        List<Member> members = tournamentService.getMembersInTournament(id);
+    public ResponseEntity<List<MemberDTO>> getMembersInTournament(@PathVariable UUID id) {
+        List<MemberDTO> members = tournamentService.getMembersInTournament(id);
         return ResponseEntity.ok(members);
     }
 }
