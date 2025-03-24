@@ -1,8 +1,9 @@
 package com.tournamentmanager.controller;
 
 import com.tournamentmanager.dto.MemberDTO;
-import com.tournamentmanager.model.Member;
 import com.tournamentmanager.model.Tournament;
+import com.tournamentmanager.dto.TournamentDTO;
+import com.tournamentmanager.utility.TournamentMapper;
 import com.tournamentmanager.service.TournamentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/tournaments")
@@ -22,32 +24,46 @@ public class TournamentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Tournament>> getAllTournaments() {
-        return ResponseEntity.ok(tournamentService.getAllTournaments());
+    public ResponseEntity<List<TournamentDTO>> getAllTournaments() {
+        List<TournamentDTO> tournaments = tournamentService.getAllTournaments()
+                .stream()
+                .map(TournamentMapper::toDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(tournaments);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tournament> getTournamentById(@PathVariable UUID id) {
+    public ResponseEntity<TournamentDTO> getTournamentById(@PathVariable UUID id) {
         return tournamentService.getTournamentById(id)
+                .map(TournamentMapper::toDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Tournament> createTournament(@RequestBody Tournament tournament) {
+    public ResponseEntity<TournamentDTO> createTournament(@RequestBody Tournament tournament) {
         Tournament created = tournamentService.createTournament(tournament);
-        return ResponseEntity.ok(created);
+        return ResponseEntity.ok(TournamentMapper.toDTO(created));
     }
 
     @GetMapping("/start-date")
-    public ResponseEntity<List<Tournament>> getTournamentsByStartDate(@RequestParam LocalDate startDate) {
-        List<Tournament> tournaments = tournamentService.getTournamentByStartDate(startDate);
+    public ResponseEntity<List<TournamentDTO>> getTournamentsByStartDate(@RequestParam LocalDate startDate) {
+        List<TournamentDTO> tournaments = tournamentService.getTournamentByStartDate(startDate)
+                .stream()
+                .map(TournamentMapper::toDTO)
+                .collect(Collectors.toList());
+
         return ResponseEntity.ok(tournaments);
     }
 
     @GetMapping("/location")
-    public ResponseEntity<List<Tournament>> getTournamentsByLocation(@RequestParam String query) {
-        List<Tournament> tournaments = tournamentService.getTournamentByLocation(query);
+    public ResponseEntity<List<TournamentDTO>> getTournamentsByLocation(@RequestParam String query) {
+        List<TournamentDTO> tournaments = tournamentService.getTournamentByLocation(query)
+                .stream()
+                .map(TournamentMapper::toDTO)
+                .collect(Collectors.toList());
+
         return ResponseEntity.ok(tournaments);
     }
 

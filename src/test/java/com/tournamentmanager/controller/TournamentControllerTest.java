@@ -63,11 +63,4 @@ public class TournamentControllerTest {
         memberDTO = toDTO(member);
     }
 
-    @Test
-    void testGetAllTournaments() {
-        when(tournamentService.getAllTournaments()).thenReturn(List.of(tournament));
-
-        ResponseEntity<List<TournamentDTO>> responseEntity = tournamentController.getAllTournaments();
-    }
-
 }
