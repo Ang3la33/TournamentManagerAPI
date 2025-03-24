@@ -51,6 +51,9 @@ public class MemberService {
         return memberRepository.save(existing);
     }
 
+    public List<Member> getMembersByName(String name) {
+        return memberRepository.findByNameContainingIgnoreCase(name);
+    }
 
     public List<Member> getMembersByDuration(int years) {
         return memberRepository.findByMembershipDuration(years);

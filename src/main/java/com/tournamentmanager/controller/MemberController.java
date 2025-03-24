@@ -47,6 +47,12 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getMembersByType(type));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Member>> searchMembersByName(@RequestParam String name) {
+        List<Member> members = memberService.getMembersByName(name);
+        return ResponseEntity.ok(members);
+    }
+
     @GetMapping("/duration")
     public ResponseEntity<List<Member>> getByMembershipDuration(@RequestParam int years) {
         return ResponseEntity.ok(memberService.getMembersByDuration(years));
