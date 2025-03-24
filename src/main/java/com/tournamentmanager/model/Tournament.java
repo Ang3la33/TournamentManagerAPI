@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,10 +33,10 @@ public class Tournament {
     private String location;
 
     @Column(nullable = false)
-    private Double entryFee;
+    private BigDecimal entryFee;
 
     @Column
-    private Double cashPrize;
+    private BigDecimal cashPrize;
 
     @ManyToMany
     @JoinTable(
