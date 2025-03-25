@@ -55,6 +55,10 @@ public class MemberService {
         return memberRepository.findByNameContainingIgnoreCase(name);
     }
 
+    public List<Member> getMemberByPhone(String phone) {
+        return memberRepository.findByPhone(phone);
+    }
+
     public List<Member> getMembersByDuration(int years) {
         return memberRepository.findByMembershipDuration(years);
     }
@@ -75,4 +79,5 @@ public class MemberService {
 
         return memberRepository.save(member);
     }
+
 }

@@ -47,6 +47,11 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getMembersByType(type));
     }
 
+    @GetMapping("/phone")
+    public ResponseEntity<List<Member>> getByMembershipPhone(@RequestParam String phone) {
+        return ResponseEntity.ok(memberService.getMemberByPhone(phone));
+    }
+
     @GetMapping("/search")
     public ResponseEntity<List<Member>> searchMembersByName(@RequestParam String name) {
         List<Member> members = memberService.getMembersByName(name);
