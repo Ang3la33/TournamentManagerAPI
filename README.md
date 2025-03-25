@@ -95,7 +95,8 @@ java -jar target/TournamentManagerAPI-1.0-SNAPSHOT.jar
 
 You can find screenshots of all Postman tests inside the project:
 
-📁 [`docs/screenshots/Postman_TournamentManagerAPI_Screenshots.pdf`](.docs/screenshots/Postman_TournamentManagerAPI_Screenshots.pdf)
+📂 [`docs/screenshots/Postman_TournamentManagerAPI_Postman_Screenshots.pdf`](docs/screenshots/Postman_TournamentManagerAPI_Postman_Screenshots.pdf)
+
 
 It includes:
 
