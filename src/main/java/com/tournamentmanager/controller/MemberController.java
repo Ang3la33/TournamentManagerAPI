@@ -3,9 +3,11 @@ package com.tournamentmanager.controller;
 import com.tournamentmanager.model.Member;
 import com.tournamentmanager.model.MembershipType;
 import com.tournamentmanager.service.MemberService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,6 +70,11 @@ public class MemberController {
             @PathVariable UUID memberId,
             @PathVariable UUID tournamentId) {
         return ResponseEntity.ok(memberService.addMemberToTournament(memberId, tournamentId));
+    }
+
+    @GetMapping("/tournament-start-date")
+    public ResponseEntity<List<Member>> getTournamentStartDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return ResponseEntity.ok(memberService.getMembersByTournamentStartDate(date));
     }
 
 }

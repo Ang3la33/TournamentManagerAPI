@@ -7,6 +7,7 @@ import com.tournamentmanager.repository.MemberRepository;
 import com.tournamentmanager.repository.TournamentRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -78,6 +79,10 @@ public class MemberService {
         tournament.getMembers().add(member);
 
         return memberRepository.save(member);
+    }
+
+    public List<Member> getMembersByTournamentStartDate(LocalDate startDate) {
+        return memberRepository.findByTournamentStartDate(startDate);
     }
 
 }
